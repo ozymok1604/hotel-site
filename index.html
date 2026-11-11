@@ -214,8 +214,12 @@
     .lang-switch button[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
     .nav-toggle { display: none; }
     @media (max-width: 767px) { .header-cta { display: none; } }
+    .nav-lang { display: none; }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1040px) {
+      .header-lang { display: none; }
+      .nav-lang { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: 14px 12px 0; border-top: 1px solid var(--border); }
+      .nav-lang__label { font-weight: 600; color: var(--text-muted); }
       .nav-toggle { display: inline-grid; }
       .main-nav {
         position: fixed; inset: var(--header-h) 0 auto 0; margin: 0; padding: 12px var(--gutter) 20px;
@@ -243,7 +247,7 @@
     .hero__media img { width: 100%; height: 100%; object-fit: cover; }
     .hero::before {
       content: ""; position: absolute; inset: 0; z-index: -1;
-      background: linear-gradient(180deg, rgba(4, 30, 42, .15) 0%, rgba(4, 30, 42, .1) 35%, rgba(4, 30, 42, .78) 100%);
+      background: linear-gradient(180deg, rgba(4, 30, 42, .2) 0%, rgba(4, 30, 42, .25) 40%, rgba(4, 30, 42, .82) 100%);
     }
     .hero__content { padding-block: 120px clamp(48px, 8vw, 96px); max-width: 760px; }
     .hero .eyebrow { color: #ffe2c6; }
@@ -431,8 +435,6 @@
     @media (min-width: 900px) { .location { grid-template-columns: 1.4fr 1fr; } }
     .map { position: relative; overflow: hidden; min-height: 340px; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--surface-2); }
     .map img, .map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
-    .map__overlay { position: absolute; inset: auto 16px 16px 16px; display: grid; gap: 8px; justify-items: start; }
-    .map__overlay p { margin: 0; padding: 8px 12px; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--surface) 92%, transparent); font-size: .82rem; color: var(--text-muted); max-width: 420px; }
     .dist-list { list-style: none; margin: 0; padding: 0; }
     .dist-list li { display: grid; grid-template-columns: 44px 1fr auto; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
     .dist-list li:last-child { border-bottom: 0; }
@@ -597,7 +599,6 @@
       <symbol id="i-paw" viewBox="0 0 24 24"><circle cx="5.5" cy="10" r="2"/><circle cx="9.5" cy="5.5" r="2"/><circle cx="14.5" cy="5.5" r="2"/><circle cx="18.5" cy="10" r="2"/><path d="M12 11c-3 0-6 4.5-6 7a2.5 2.5 0 0 0 3 2.4c1-.2 2-.6 3-.6s2 .4 3 .6a2.5 2.5 0 0 0 3-2.4c0-2.5-3-7-6-7z"/></symbol>
       <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
       <symbol id="i-euro" viewBox="0 0 24 24"><path d="M18 6.5a7 7 0 1 0 0 11M4 10h9M4 14h9"/></symbol>
-      <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2zM9 4v14M15 6v14"/></symbol>
     </defs>
   </svg>
 
@@ -625,9 +626,14 @@
           <li><a href="#location" data-i18n="nav.location">Location</a></li>
           <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
         </ul>
+        <div class="nav-lang">
+          <span class="nav-lang__label" id="nav-lang-label" data-i18n="footer.lang">Language</span>
+          <div class="lang-switch" role="group" aria-labelledby="nav-lang-label" data-lang-switch></div>
+        </div>
       </nav>
 
       <div class="header-actions">
+        <div class="lang-switch header-lang" role="group" data-i18n-aria-label="footer.lang" aria-label="Language" data-lang-switch></div>
         <a class="btn btn--accent btn--sm header-cta" href="#booking" data-i18n="sticky.book">Book now</a>
         <button class="icon-btn" type="button" id="theme-toggle">
           <svg class="icon" aria-hidden="true"><use href="#i-moon" /></svg>
@@ -849,14 +855,8 @@
         </div>
         <div class="location">
           <div class="map" id="map">
-            <img id="map-placeholder" alt="" data-i18n-alt="loc.mapPlaceholder" />
-            <div class="map__overlay" id="map-overlay">
-              <button class="btn btn--primary btn--sm" type="button" id="map-load">
-                <svg class="icon" aria-hidden="true"><use href="#i-map" /></svg>
-                <span data-i18n="loc.mapLoad">Load interactive map</span>
-              </button>
-              <p data-i18n="loc.mapNote"></p>
-            </div>
+            <!-- generated map stays underneath as a backdrop while the iframe loads -->
+            <img id="map-placeholder" alt="" aria-hidden="true" />
           </div>
           <div class="card" style="padding:24px">
             <h3 data-i18n="dist.title">Distances</h3>
@@ -966,6 +966,7 @@
       </div>
       <div class="footer-bottom">
         <span id="footer-rights"></span>
+        <a href="https://unsplash.com/" target="_blank" rel="noopener noreferrer" data-i18n="footer.photos">Sample photos: Unsplash</a>
         <a href="#privacy" id="privacy-link" data-i18n="footer.privacy">Privacy policy</a>
       </div>
     </div>
@@ -1049,9 +1050,12 @@
     currency: 'EUR',
     touristTaxPerPersonNight: 1.5, // illustrative placeholder, not an official rate
     maxMonthsAhead: 12,
+    // Real stock photos (Unsplash, free licence) loaded from images.unsplash.com.
+    // Set to false to use only the generated SVG placeholders (fully offline, no third-party requests).
+    useRealPhotos: true,
     map: {
       // Generic area around Bačvice, Split — not a real property location.
-      embedUrl: 'https://www.openstreetmap.org/export/embed.html?bbox=16.4300%2C43.4960%2C16.4620%2C43.5130&layer=mapnik&marker=43.5030%2C16.4460',
+      embedUrl: 'https://www.openstreetmap.org/export/embed.html?bbox=16.4380%2C43.4985%2C16.4620%2C43.5100&layer=mapnik&marker=43.5042%2C16.4505',
     },
   };
 
@@ -1077,7 +1081,8 @@
       'hero.eyebrow': 'Family-run holiday apartments · Split, Croatia',
       'hero.tagline': '5 minutes from Bačvice beach',
       'hero.cta': 'Check availability',
-      'hero.imgAlt': 'Placeholder illustration of a sea view with islands on the horizon',
+      'hero.imgAlt': 'Split waterfront seen from the sea (stock photo)',
+      'hero.imgAltPlaceholder': 'Placeholder illustration of a sea view with islands on the horizon',
       'sticky.book': 'Book now',
       'sticky.from': 'from {price} / night',
 
@@ -1119,7 +1124,7 @@
       'gallery.title': 'Gallery',
       'gallery.filterLabel': 'Filter photos',
       'gallery.open': 'Open photo: {label}',
-      'gallery.alt': 'Placeholder photo — {name}, {cat} {n}',
+      'gallery.alt': 'Sample photo — {name}, {cat} {n}',
       'filter.all': 'All',
       'cat.rooms': 'Rooms',
       'cat.kitchen': 'Kitchen',
@@ -1195,10 +1200,7 @@
       'period.high': 'Jul – Aug',
 
       'loc.title': 'Location',
-      'loc.mapLoad': 'Load interactive map',
-      'loc.mapNote': 'The map is provided by OpenStreetMap and loads only after you click (it connects to an external server).',
       'loc.mapTitle': 'Map showing the approximate area in Split',
-      'loc.mapPlaceholder': 'Stylised map placeholder of the area near the beach',
       'dist.title': 'Distances',
       'dist.approx': 'Distances are approximate.',
       'dist.beach': 'Bačvice beach',
@@ -1263,12 +1265,13 @@
 
       'privacy.title': 'Privacy policy (placeholder)',
       'privacy.p1': 'This is placeholder text for a sales demo. A real website would describe here who the data controller is, which personal data is processed for booking requests, the legal basis, retention periods and your rights under the GDPR.',
-      'privacy.p2': 'This demo does not send, store or track anything: form inputs stay in your browser’s memory and disappear when you close or reload the page. No cookies or analytics are used.',
-      'privacy.p3': 'The optional map is loaded from OpenStreetMap only after you click “Load interactive map” or accept optional services.',
+      'privacy.p2': 'This demo does not send, store or track anything: form inputs stay in your browser’s memory and disappear when you close or reload the page. No cookies or analytics are used. The sample photos are loaded from Unsplash (images.unsplash.com), which receives your IP address like any image host.',
+      'footer.photos': 'Sample photos: Unsplash',
+      'privacy.p3': 'The map in the Location section is embedded from OpenStreetMap (openstreetmap.org), which receives your IP address when the map loads.',
       'privacy.close': 'Close',
 
       'cookie.label': 'Cookie notice',
-      'cookie.text': 'This demo uses no tracking cookies. A real site would ask for your consent here before loading optional services such as maps or analytics.',
+      'cookie.text': 'This demo uses no tracking cookies or analytics. The map (OpenStreetMap) and sample photos (Unsplash) are loaded from external servers.',
       'cookie.accept': 'Accept',
       'cookie.decline': 'Decline',
     },
@@ -1290,7 +1293,8 @@
       'hero.eyebrow': 'Obiteljski apartmani za odmor · Split, Hrvatska',
       'hero.tagline': '5 minuta od plaže Bačvice',
       'hero.cta': 'Provjeri dostupnost',
-      'hero.imgAlt': 'Ilustracija pogleda na more s otocima na obzoru (rezervirano mjesto)',
+      'hero.imgAlt': 'Splitska riva gledana s mora (fotografija iz banke fotografija)',
+      'hero.imgAltPlaceholder': 'Ilustracija pogleda na more s otocima na obzoru (rezervirano mjesto)',
       'sticky.book': 'Rezerviraj',
       'sticky.from': 'od {price} / noć',
 
@@ -1332,7 +1336,7 @@
       'gallery.title': 'Galerija',
       'gallery.filterLabel': 'Filtriraj fotografije',
       'gallery.open': 'Otvori fotografiju: {label}',
-      'gallery.alt': 'Rezervirano mjesto za fotografiju — {name}, {cat} {n}',
+      'gallery.alt': 'Primjer fotografije — {name}, {cat} {n}',
       'filter.all': 'Sve',
       'cat.rooms': 'Sobe',
       'cat.kitchen': 'Kuhinja',
@@ -1408,10 +1412,7 @@
       'period.high': 'srp – kol',
 
       'loc.title': 'Lokacija',
-      'loc.mapLoad': 'Učitaj interaktivnu kartu',
-      'loc.mapNote': 'Kartu pruža OpenStreetMap i učitava se tek nakon klika (povezuje se s vanjskim poslužiteljem).',
       'loc.mapTitle': 'Karta s približnim područjem u Splitu',
-      'loc.mapPlaceholder': 'Stilizirana karta područja uz plažu (rezervirano mjesto)',
       'dist.title': 'Udaljenosti',
       'dist.approx': 'Udaljenosti su približne.',
       'dist.beach': 'Plaža Bačvice',
@@ -1476,12 +1477,13 @@
 
       'privacy.title': 'Pravila privatnosti (predložak)',
       'privacy.p1': 'Ovo je rezervirani tekst za prodajni demo. Prava stranica ovdje bi opisala tko je voditelj obrade, koji se osobni podaci obrađuju za upite za rezervaciju, pravnu osnovu, rokove čuvanja i vaša prava prema GDPR-u.',
-      'privacy.p2': 'Ovaj demo ništa ne šalje, ne pohranjuje i ne prati: uneseni podaci ostaju u memoriji preglednika i nestaju kad zatvorite ili osvježite stranicu. Ne koriste se kolačići ni analitika.',
-      'privacy.p3': 'Neobavezna karta učitava se s OpenStreetMapa tek nakon klika na „Učitaj interaktivnu kartu” ili prihvaćanja neobaveznih usluga.',
+      'privacy.p2': 'Ovaj demo ništa ne šalje, ne pohranjuje i ne prati: uneseni podaci ostaju u memoriji preglednika i nestaju kad zatvorite ili osvježite stranicu. Ne koriste se kolačići ni analitika. Primjeri fotografija učitavaju se s Unsplasha (images.unsplash.com), koji kao i svaki poslužitelj slika vidi vašu IP adresu.',
+      'footer.photos': 'Primjeri fotografija: Unsplash',
+      'privacy.p3': 'Karta u odjeljku Lokacija ugrađena je s OpenStreetMapa (openstreetmap.org), koji pri učitavanju karte vidi vašu IP adresu.',
       'privacy.close': 'Zatvori',
 
       'cookie.label': 'Obavijest o kolačićima',
-      'cookie.text': 'Ovaj demo ne koristi kolačiće za praćenje. Prava stranica ovdje bi zatražila vaš pristanak prije učitavanja neobaveznih usluga poput karata ili analitike.',
+      'cookie.text': 'Ovaj demo ne koristi kolačiće za praćenje ni analitiku. Karta (OpenStreetMap) i primjeri fotografija (Unsplash) učitavaju se s vanjskih poslužitelja.',
       'cookie.accept': 'Prihvati',
       'cookie.decline': 'Odbij',
     },
@@ -1503,7 +1505,8 @@
       'hero.eyebrow': 'Familiengeführte Ferienwohnungen · Split, Kroatien',
       'hero.tagline': '5 Minuten vom Strand Bačvice',
       'hero.cta': 'Verfügbarkeit prüfen',
-      'hero.imgAlt': 'Platzhalter-Illustration eines Meerblicks mit Inseln am Horizont',
+      'hero.imgAlt': 'Uferpromenade von Split vom Meer aus gesehen (Stockfoto)',
+      'hero.imgAltPlaceholder': 'Platzhalter-Illustration eines Meerblicks mit Inseln am Horizont',
       'sticky.book': 'Jetzt buchen',
       'sticky.from': 'ab {price} / Nacht',
 
@@ -1545,7 +1548,7 @@
       'gallery.title': 'Galerie',
       'gallery.filterLabel': 'Fotos filtern',
       'gallery.open': 'Foto öffnen: {label}',
-      'gallery.alt': 'Platzhalterfoto — {name}, {cat} {n}',
+      'gallery.alt': 'Beispielfoto — {name}, {cat} {n}',
       'filter.all': 'Alle',
       'cat.rooms': 'Zimmer',
       'cat.kitchen': 'Küche',
@@ -1621,10 +1624,7 @@
       'period.high': 'Jul – Aug',
 
       'loc.title': 'Lage',
-      'loc.mapLoad': 'Interaktive Karte laden',
-      'loc.mapNote': 'Die Karte stammt von OpenStreetMap und wird erst nach einem Klick geladen (Verbindung zu einem externen Server).',
       'loc.mapTitle': 'Karte mit dem ungefähren Gebiet in Split',
-      'loc.mapPlaceholder': 'Stilisierte Platzhalterkarte der Gegend am Strand',
       'dist.title': 'Entfernungen',
       'dist.approx': 'Entfernungen sind ungefähre Angaben.',
       'dist.beach': 'Strand Bačvice',
@@ -1689,12 +1689,13 @@
 
       'privacy.title': 'Datenschutzerklärung (Platzhalter)',
       'privacy.p1': 'Dies ist ein Platzhaltertext für eine Verkaufsdemo. Eine echte Website würde hier den Verantwortlichen, die für Buchungsanfragen verarbeiteten personenbezogenen Daten, die Rechtsgrundlage, Speicherfristen und Ihre Rechte nach der DSGVO beschreiben.',
-      'privacy.p2': 'Diese Demo sendet, speichert und verfolgt nichts: Formulareingaben bleiben im Arbeitsspeicher Ihres Browsers und verschwinden beim Schließen oder Neuladen der Seite. Es werden keine Cookies oder Analysetools verwendet.',
-      'privacy.p3': 'Die optionale Karte wird erst nach einem Klick auf „Interaktive Karte laden“ oder nach Zustimmung zu optionalen Diensten von OpenStreetMap geladen.',
+      'privacy.p2': 'Diese Demo sendet, speichert und verfolgt nichts: Formulareingaben bleiben im Arbeitsspeicher Ihres Browsers und verschwinden beim Schließen oder Neuladen der Seite. Es werden keine Cookies oder Analysetools verwendet. Die Beispielfotos werden von Unsplash (images.unsplash.com) geladen, das – wie jeder Bildserver – Ihre IP-Adresse erhält.',
+      'footer.photos': 'Beispielfotos: Unsplash',
+      'privacy.p3': 'Die Karte im Abschnitt „Lage“ ist von OpenStreetMap (openstreetmap.org) eingebettet, das beim Laden der Karte Ihre IP-Adresse erhält.',
       'privacy.close': 'Schließen',
 
       'cookie.label': 'Cookie-Hinweis',
-      'cookie.text': 'Diese Demo verwendet keine Tracking-Cookies. Eine echte Website würde hier Ihre Einwilligung einholen, bevor optionale Dienste wie Karten oder Analysen geladen werden.',
+      'cookie.text': 'Diese Demo verwendet keine Tracking-Cookies und keine Analyse. Karte (OpenStreetMap) und Beispielfotos (Unsplash) werden von externen Servern geladen.',
       'cookie.accept': 'Akzeptieren',
       'cookie.decline': 'Ablehnen',
     },
@@ -1718,7 +1719,6 @@
     galleryFilter: 'all',
     lightboxIndex: 0,
     consent: null, // 'accept' | 'decline' | null
-    mapLoaded: false,
     confirmation: null, // non-personal summary shown after a request
   };
 
@@ -1908,14 +1908,37 @@
   /* =======================================================================
      entities — static content data
      ======================================================================= */
-  // Photos per apartment: [scene/category, variant]. Replace with real photo URLs later.
+  // Photos per apartment: [category, generated-variant, Unsplash photo id].
+  // Stock photos from unsplash.com (Unsplash License, free) — demo only, not the real property.
+  // The generated SVG (category + variant) is the fallback if a photo fails to load.
   const GALLERY_CATS = ['rooms', 'kitchen', 'bathroom', 'terrace', 'view'];
+  const HERO_PHOTO = '1657970751441-4d52c445ad9e'; // unsplash.com/photos/DJOoPFtYWBg
   const UNIT_PHOTOS = Object.fromEntries(Object.entries({
-    studio: [['rooms', 0], ['kitchen', 0], ['bathroom', 0], ['view', 0]],
-    one: [['rooms', 1], ['rooms', 2], ['kitchen', 1], ['bathroom', 1], ['view', 1]],
-    two: [['terrace', 0], ['rooms', 3], ['rooms', 4], ['kitchen', 2], ['bathroom', 2], ['terrace', 1], ['terrace', 2], ['view', 2]],
-  }).map(([unitId, list]) => [unitId, list.map(([cat, v], i) => ({
-    cat, v, n: list.slice(0, i + 1).filter(([c]) => c === cat).length,
+    studio: [
+      ['rooms', 0, '1560448075-57d0285fc59b'], // Sh22mtTd2GA
+      ['kitchen', 0, '1610527003928-47afd5f470c6'], // Wj6oZNCAzs4
+      ['bathroom', 0, '1629079447777-1e605162dc8d'], // 1AF5hP6F4tI
+      ['view', 0, '1673355101228-1a52110b2e45'], // 5Kw_4x-Zl7c
+    ],
+    one: [
+      ['rooms', 1, '1630699375019-c334927264df'], // 0jmXOqUhpTQ
+      ['rooms', 2, '1630699293259-0b6c08606c62'], // 8w2sdG9eAVY
+      ['kitchen', 1, '1484154218962-a197022b5858'], // MP0bgaS_d1c
+      ['bathroom', 1, '1584622650111-993a426fbf0a'], // g51F6-WYzyU
+      ['view', 1, '1673355101483-b629e93d9c54'], // LIbzs-Q7C-8
+    ],
+    two: [
+      ['terrace', 0, '1714919286244-6f3f6cce6e65'], // CU96aTBRQIg
+      ['rooms', 3, '1649068559107-e5d936141e44'], // 7wEy-0AHgeQ
+      ['rooms', 4, '1612320582827-a95ab2596dbc'], // G-4ZEoftr-0
+      ['kitchen', 2, '1630699144641-72fa7a6b8aa1'], // TkprGwygO5Q
+      ['bathroom', 2, '1620626011761-996317b8d101'], // Aac7IlKnYX8
+      ['terrace', 1, '1769869173719-997e7be14a56'], // N1DlQkl2V2c
+      ['terrace', 2, '1757415555332-bb1775394bab'], // T42UjG57ZVM
+      ['view', 2, '1629997865848-f4353a9296c9'], // WO7GlhTUY1s
+    ],
+  }).map(([unitId, list]) => [unitId, list.map(([cat, v, unsplashId], i) => ({
+    cat, v, unsplashId, n: list.slice(0, i + 1).filter(([c]) => c === cat).length,
   }))]));
 
   const DISTANCES = [
@@ -2004,7 +2027,7 @@
       return `
       <article class="card apt" aria-labelledby="apt-${u.id}-title">
         <button type="button" class="apt__media" data-unit-photos="${u.id}" aria-label="${esc(t('apt.photos', { name, n: UNIT_PHOTOS[u.id].length }))}">
-          <img src="${photoSrc(UNIT_PHOTOS[u.id][0])}" alt="" loading="lazy" width="800" height="600" />
+          <img ${photoAttrs(UNIT_PHOTOS[u.id][0])} alt="" loading="lazy" width="800" height="600" />
         </button>
         <div class="apt__body">
           <h3 id="apt-${u.id}-title">${esc(name)}</h3>
@@ -2032,7 +2055,11 @@
   /* =======================================================================
      features/gallery — filters, grid, lightbox
      ======================================================================= */
-  const photoSrc = (p) => placeholderImg(p.cat, p.v);
+  const unsplashUrl = (id, w) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75`;
+  const usesReal = (p) => CONFIG.useRealPhotos && p.unsplashId;
+  const photoSrc = (p, w = 800) => (usesReal(p) ? unsplashUrl(p.unsplashId, w) : placeholderImg(p.cat, p.v));
+  // <img> attributes incl. generated fallback (swapped in by the global error handler)
+  const photoAttrs = (p, w = 800) => `src="${photoSrc(p, w)}" data-fallback="${placeholderImg(p.cat, p.v)}"`;
   const unitPhotos = () => UNIT_PHOTOS[state.galleryUnit];
   const filteredGallery = () => unitPhotos().filter((p) => state.galleryFilter === 'all' || p.cat === state.galleryFilter);
   const galleryLabel = (p) => `${t(`cat.${p.cat}`)} ${p.n}`;
@@ -2051,7 +2078,7 @@
     $('#gallery-grid').innerHTML = filteredGallery().map((p, i) => `
       <li>
         <button type="button" class="gallery-item" data-index="${i}" aria-label="${esc(t('gallery.open', { label: galleryLabel(p) }))}">
-          <img src="${photoSrc(p)}" alt="" loading="lazy" width="800" height="600" />
+          <img ${photoAttrs(p, 600)} alt="" loading="lazy" width="800" height="600" />
         </button>
       </li>`).join('');
   }
@@ -2063,7 +2090,8 @@
     const g = items[state.lightboxIndex];
     if (!g) return;
     const name = t(`apt.${state.galleryUnit}.name`);
-    $('#lb-img').src = photoSrc(g);
+    $('#lb-img').dataset.fallback = placeholderImg(g.cat, g.v);
+    $('#lb-img').src = photoSrc(g, 1600);
     $('#lb-img').alt = t('gallery.alt', { name, cat: t(`cat.${g.cat}`), n: g.n });
     $('#lb-caption').textContent = `${name} · ${galleryLabel(g)}`;
     $('#lb-counter').textContent = t('lb.counter', { i: state.lightboxIndex + 1, n: items.length });
@@ -2417,11 +2445,9 @@
   }
 
   /* =======================================================================
-     features/map + consent
+     features/map + cookie notice
      ======================================================================= */
   function loadMap() {
-    if (state.mapLoaded) return;
-    state.mapLoaded = true;
     const iframe = document.createElement('iframe');
     iframe.src = CONFIG.map.embedUrl;
     iframe.loading = 'lazy';
@@ -2429,14 +2455,11 @@
     iframe.dataset.i18nTitle = 'loc.mapTitle';
     iframe.title = t('loc.mapTitle');
     $('#map').append(iframe);
-    $('#map-overlay').hidden = true;
-    $('#map-placeholder').hidden = true;
   }
 
   function setConsent(choice) {
     state.consent = choice;
     $('#cookie').hidden = true;
-    if (choice === 'accept') loadMap();
   }
 
   /* =======================================================================
@@ -2589,7 +2612,6 @@
     $('#success-again').addEventListener('click', resetBookingForm);
 
     // Map + consent + privacy dialog
-    $('#map-load').addEventListener('click', loadMap);
     $$('[data-consent]').forEach((b) => b.addEventListener('click', () => setConsent(b.dataset.consent)));
     const privacy = $('#privacy');
     let privacyOpener = null;
@@ -2612,8 +2634,25 @@
   }
 
   function init() {
-    $('#hero-img').src = placeholderImg('view', 0);
+    const hero = $('#hero-img');
+    hero.dataset.fallback = placeholderImg('view', 0);
+    if (CONFIG.useRealPhotos) {
+      hero.srcset = [800, 1280, 1920, 2560].map((w) => `${unsplashUrl(HERO_PHOTO, w)} ${w}w`).join(', ');
+      hero.sizes = '100vw';
+      hero.src = unsplashUrl(HERO_PHOTO, 1920);
+    } else {
+      hero.src = hero.dataset.fallback;
+      hero.dataset.i18nAlt = 'hero.imgAltPlaceholder';
+    }
+    // Any photo that fails to load (offline, blocked CDN) falls back to its generated SVG.
+    document.addEventListener('error', (e) => {
+      const img = e.target;
+      if (!(img instanceof HTMLImageElement) || !img.dataset.fallback || img.src === img.dataset.fallback) return;
+      img.removeAttribute('srcset');
+      img.src = img.dataset.fallback;
+    }, true);
     $('#map-placeholder').src = placeholderImg('map');
+    loadMap(); // OpenStreetMap embed is shown right away (iframe is lazy-loaded near the viewport)
     showMonthOf(TODAY);
     bindEvents();
     renderAll();
